@@ -4,19 +4,23 @@ require_once  __DIR__ . DIRECTORY_SEPARATOR . 'Migration.php';
 $to = Migration::getNewDb();
 $from = Migration::getOldDb();
 
+$fromTable = 'swa_event_deposits';
+$toTable = 'swa_deposit';
+
 $fromQueryBuilder = $from->createQueryBuilder();
-$fromQueryBuilder->select( '*' )->from( Migration::getFromTable( 'swa_unis' ) );
+$fromQueryBuilder->select( '*' )->from( Migration::getFromTable( $fromTable ) );
 $fromResult = $from->query( $fromQueryBuilder->getSQL() );
 
-$toTable = 'swa_university';
 $to->beginTransaction();
 $toQueryBuilder = $to->createQueryBuilder();
 $toQueryBuilder->insert( Migration::getToTable( $toTable ) );
 foreach( $fromResult->fetchAll() as $row ) {
     $toQueryBuilder->values( array(
         'id' => $to->quote( $row['id'], PDO::PARAM_INT ),
-        'name' => $to->quote( $row['name'], PDO::PARAM_STR ),
-        'url' => $to->quote( $row['url'], PDO::PARAM_STR ),
+        'date' => $to->quote( $row['time'], PDO::PARAM_STR ),
+        'event_id' => $to->quote( $row['event'], PDO::PARAM_INT ),
+        'university_id' => $to->quote( $row['uni_code'], PDO::PARAM_INT ),
+        'amount' => $to->quote( $row['transaction'], PDO::PARAM_STR ),
     ) );
     $insertResult = $to->query( $toQueryBuilder->getSQL() );
 }

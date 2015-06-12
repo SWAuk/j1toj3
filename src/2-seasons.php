@@ -4,19 +4,20 @@ require_once  __DIR__ . DIRECTORY_SEPARATOR . 'Migration.php';
 $to = Migration::getNewDb();
 $from = Migration::getOldDb();
 
+$fromTable = 'swa_seasons';
+$toTable = 'swa_season';
+
 $fromQueryBuilder = $from->createQueryBuilder();
-$fromQueryBuilder->select( '*' )->from( Migration::getFromTable( 'swa_unis' ) );
+$fromQueryBuilder->select( '*' )->from( Migration::getFromTable( $fromTable ) );
 $fromResult = $from->query( $fromQueryBuilder->getSQL() );
 
-$toTable = 'swa_university';
 $to->beginTransaction();
 $toQueryBuilder = $to->createQueryBuilder();
 $toQueryBuilder->insert( Migration::getToTable( $toTable ) );
 foreach( $fromResult->fetchAll() as $row ) {
     $toQueryBuilder->values( array(
         'id' => $to->quote( $row['id'], PDO::PARAM_INT ),
-        'name' => $to->quote( $row['name'], PDO::PARAM_STR ),
-        'url' => $to->quote( $row['url'], PDO::PARAM_STR ),
+        'year' => $to->quote( $row['year'], PDO::PARAM_INT ),
     ) );
     $insertResult = $to->query( $toQueryBuilder->getSQL() );
 }

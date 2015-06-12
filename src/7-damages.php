@@ -31,4 +31,4 @@ try{
     throw $e;
 }
 
-echo "Done!";
+echo "Done!\n";

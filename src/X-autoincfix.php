@@ -45,4 +45,4 @@ END $$";
 
 
 
-echo "Done!";
+echo "Done!\n";

@@ -46,4 +46,4 @@ BEGIN
 END $$";
 $alterResult = $to->query( $alterAutoIncSql );
 
-echo "Done!";
+echo "Done!\n";

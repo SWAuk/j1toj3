@@ -31,19 +31,4 @@ try{
     throw $e;
 }
 
-//Reset the AutoInc value
-$alterAutoIncSql = "DROP PROCEDURE if exists reset_autoincrement;
-CREATE PROCEDURE reset_autoincrement
-BEGIN
-
-  SELECT @max := MAX(ID)+ 1 FROM ABC;
-
-  PREPARE stmt FROM 'ALTER TABLE " . Migration::getToTable( $toTable ) . " AUTO_INCREMENT = ?'
-  EXECUTE stmt USING @max
-
-  DEALLOCATE PREPARE stmt;
-
-END $$";
-$alterResult = $to->query( $alterAutoIncSql );
-
 echo "Done!\n";

@@ -13,6 +13,7 @@ $types = array(
     'Advanced Race',
     'Freestyle',
     'Wave',
+    'Team',
 );
 
 foreach( $types as $type ) {
